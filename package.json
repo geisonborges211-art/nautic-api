@@ -1,9 +1,16 @@
 {
-  "name": "nautic-api",
+  "name": "api-nautica",
   "version": "1.0.0",
+  "description": "API para geração de artes automáticas",
+  "main": "server.js",
   "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
-    "openai": "^4.0.0"
+    "openai": "^4.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
   }
 }
