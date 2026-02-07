@@ -1,9 +1,10 @@
 {
-  "name": "nautic-api",
+  "name": "api-nautica",
   "version": "1.0.0",
-  "main": "server.js",
+  "type": "module",
+  "main": "servidor.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node servidor.js"
   },
   "dependencies": {
     "express": "^4.18.2",
