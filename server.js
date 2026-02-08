@@ -78,15 +78,22 @@ Direcao criativa: ${creativeDirections ? JSON.stringify(creativeDirections) : "n
       model: "gpt-image-1",
       prompt,
       size: "1024x1024",
-      response_format: "b64_json",
     });
 
-    const b64 = imageResponse?.data?.[0]?.b64_json;
-    if (!b64) {
+    const imageData = imageResponse?.data?.[0];
+    if (!imageData) {
       return res.status(502).json({ message: "Resposta da OpenAI sem imagem" });
     }
 
-    const imageUrl = `data:image/png;base64,${b64}`;
+    const imageUrl = imageData.url
+      ? imageData.url
+      : imageData.b64_json
+        ? `data:image/png;base64,${imageData.b64_json}`
+        : null;
+
+    if (!imageUrl) {
+      return res.status(502).json({ message: "Resposta da OpenAI sem imagem" });
+    }
     return res.json({ imageUrl });
   } catch (error) {
     console.error("Erro ao gerar imagem:", error);
