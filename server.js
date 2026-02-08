@@ -2,6 +2,17 @@ import "dotenv/config";
 import express from "express";
 import OpenAI from "openai";
 
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled rejection:", err);
+});
+
+console.log("Booting API...");
+console.log("OPENAI_API_KEY present:", Boolean(process.env.OPENAI_API_KEY));
+
 const app = express();
 
 app.use(express.json({ limit: "2mb" }));
@@ -19,9 +30,14 @@ app.get("/", (req, res) => {
   res.send("API ONLINE");
 });
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
+
+const getOpenAI = () =>
+  new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 
 app.post("/gerar", async (req, res) => {
   try {
@@ -57,6 +73,7 @@ Intensidade: ${intensity}
 Direcao criativa: ${creativeDirections ? JSON.stringify(creativeDirections) : "n/a"}
 `;
 
+    const openai = getOpenAI();
     const imageResponse = await openai.images.generate({
       model: "gpt-image-1",
       prompt,
