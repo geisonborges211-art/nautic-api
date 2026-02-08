@@ -1,5 +1,5 @@
-import express from "express";
-import OpenAI from "openai";
+const express = require("express");
+const OpenAI = require("openai");
 
 const app = express();
 app.use(express.json());
@@ -19,8 +19,7 @@ Crie uma campanha estratégica profissional para:
 Produto: ${produto}
 Campanha: ${campanha}
 
-Responda em JSON no formato:
-
+Responda em JSON:
 {
   "titulo": "",
   "subtitulo": "",
@@ -31,17 +30,17 @@ Responda em JSON no formato:
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "Você é especialista em marketing." },
         { role: "user", content: prompt }
       ],
-      temperature: 0.7,
+      temperature: 0.7
     });
 
     const texto = response.choices[0].message.content;
 
     res.json(JSON.parse(texto));
-  } catch (error) {
-    console.error(error);
+
+  } catch (erro) {
+    console.error(erro);
     res.status(500).json({ erro: "Erro ao gerar campanha" });
   }
 });
@@ -49,5 +48,5 @@ Responda em JSON no formato:
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log("Servidor rodando na porta " + PORT);
 });
